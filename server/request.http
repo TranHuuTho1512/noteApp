@@ -1,0 +1,21 @@
+POST http://localhost:5000/api/auth/register
+
+Content-Type: application/json
+
+{
+    "username": "huutho4",
+    "password": "huutho1"
+}
+
+###
+
+PUT http://localhost:5000/api/posts/621c928380fed76f1ab9cf06
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjFjOTIyNDgwZmVkNzZmMWFiOWNmMDQiLCJpYXQiOjE2NDYwMzk1ODh9.YRQ3xjFWleRhTzB6DiQ_p_U7fjUtRDz8GRBZEPQOLfc
+
+{
+  "title": "Vue",
+  "description": "VUEEEEE",
+  "url": "https://vuejs.org",
+  "status": "LEARNING"
+}
