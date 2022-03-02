@@ -2,14 +2,34 @@ const express = require('express');
 const router = express.Router();
 const argon2 = require('argon2');
 const jwt = require('jsonwebtoken');
+const vetifyToken = require('../middleware/auth')
 
 const User = require('../models/User.js')
+
+
+//route GET api/auth
+//desc Check if user is logged in
+router.get('/', vetifyToken, async (req, res) => {
+    try {
+        const user = await User.findById(req.userId).select('-password')
+        if (!user) {
+            return res.status(400).json({ success: false, message: 'User not found' })
+        }
+        res.json({ success: true, user })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({ success: false, message: 'Internal server error' })
+
+    }
+})
+
 
 //route POST api/auth/register
 //desc Register user 
 router.post('/register', async (req, res) => {
     const { username, password } = req.body;
     // console.log(username, password);
+
     // Simple validation
     if (!username || !password) {
         return res
