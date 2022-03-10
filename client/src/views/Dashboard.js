@@ -8,8 +8,10 @@ import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Toast from 'react-bootstrap/Toast';
 import SinglePost from '../components/posts/SinglePost'
 import AddPostModal from '../components/posts/AddPostModal';
+import UpdatePostModal from '../components/posts/UpdatePostModal';
 import addIcon from '../assets/plus-circle-fill.svg';
 import OverlayTrigger from 'react-bootstrap/OverlayTrigger';
 import Tooltip from 'react-bootstrap/Tooltip';
@@ -21,9 +23,11 @@ const Dashboard = () => {
 
     //Context
     const {
-        postState: { posts, postsLoading },
+        postState: { post, posts, postsLoading },
         getPosts,
-        setShowAddPostModal
+        setShowAddPostModal,
+        showToast: { show, message, type },
+        setShowToast
     } = useContext(PostContext)
 
     //Start: Get all posts
@@ -46,7 +50,7 @@ const Dashboard = () => {
                         <Card.Text>
                             Click the button below to track your first skill to learn
                         </Card.Text>
-                        <Button variant='primary'>
+                        <Button variant='primary' onClick={setShowAddPostModal.bind(this, true)}>
                             NoteApp!
                         </Button>
                     </Card.Body>
@@ -77,6 +81,14 @@ const Dashboard = () => {
     return (
         <>{body}
             <AddPostModal />
+            {post !== null && <UpdatePostModal />}
+            <Toast show={show} style={{ position: 'fixed', top: '20%', right: '10px' }} className={`bg-${type} text-white`}
+                onClose={setShowToast.bind(this, { show: false, message: '', type: null })}
+                delay={3000} autohide>
+                <Toast.Body>
+                    <strong>{message}</strong>
+                </Toast.Body>
+            </Toast>
         </>
     )
 }

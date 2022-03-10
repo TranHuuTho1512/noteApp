@@ -2,18 +2,48 @@ const express = require('express');
 const Post = require('../models/Post');
 const router = express.Router();
 const vetifyToken = require('../middleware/auth');
+const nodemailer = require('nodemailer');
+
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: 'tranhuutho151220@gmail.com',//Email minh
+        pass: 'thobatbai151200'
+    },
+    tls: {
+        rejectUnauthorized: false
+    }
+});
+
+
 
 
 //@route Put api/posts
 //@desc Update post
 //@access Private
 router.put('/:id', vetifyToken, async (req, res) => {
-    const { title, description, url, status } = req.body;
+    const { title, description, url, status, email } = req.body;
 
     if (!title) {
         return res.status(400).json({ success: false, message: "Title is required" })
     }
     try {
+        const mailOptions = {
+            from: 'Tran Huu Tho <thotran151200@gmail.com>',
+            to: `${email}`,// Email người nhận
+            subject: 'Sending Email using Node.js',
+            text: 'That was easy!',
+            html: `<h1>${title}</h1>
+            <h1>${url}</h1><h1>${title}</h1><h1>${title}</h1>`
+        };
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+
         let updatePost = {
             title,
             description: description || '',
@@ -61,8 +91,8 @@ router.get('/', vetifyToken, async (req, res) => {
 //@access Private
 
 router.post('/', vetifyToken, async (req, res) => {
-    const { title, description, url, status } = req.body;
-
+    const { title, description, url, status, email } = req.body;
+    console.log(req.body);
     if (!title) {
         return res.status(400).json({ success: false, message: "Title is required" })
     }
@@ -72,8 +102,10 @@ router.post('/', vetifyToken, async (req, res) => {
             description,
             url: url.startsWith('https://') ? url : `https://${url}`,
             status: status || 'TO LEARN',
+            email,
             user: req.userId
         })
+        // res.send({ message: '222' });
         await newPost.save();
 
         res.json({ success: true, message: 'Happy learning', post: newPost });

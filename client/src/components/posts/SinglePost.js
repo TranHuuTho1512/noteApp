@@ -5,14 +5,14 @@ import Badge from 'react-bootstrap/Badge';
 import ActionButtons from './ActionButtons'
 
 const SinglePost = ({ post: { _id, status, title, description, url } }) => (
-    <Card className='shadow' border={status === 'LEARNED' ? 'success' : status === 'LEARNING' ? 'warning' : 'danger'}>
+    <Card className='shadow' border={status === 'LEARNED' ? ('success') : (status === 'LEARNING' ? 'warning' : 'danger')}>
         <Card.Body>
             <Card.Title>
                 <Row>
                     <Col>
                         <p className='post-title'>{title}</p>
-                        <Badge pill variant={
-                            status === 'LEARNED' ? 'success' : status === 'LEARNING' ? 'warning' : 'danger'}>{status}
+                        <Badge pill bg={
+                            status === 'LEARNED' ? ('success') : (status === 'LEARNING' ? 'warning' : 'danger')}>{status}
                         </Badge>
                     </Col>
                     <Col className='text-right'>

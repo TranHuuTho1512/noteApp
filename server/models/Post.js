@@ -18,6 +18,10 @@ const PostSchema = new Schema({
         enum: ['TO LEARN', 'LEARNING', 'LEARNED'],
 
     },
+    email: {
+        type: String,
+
+    },
     user: {
         type: Schema.Types.ObjectId,
         ref: 'users'
